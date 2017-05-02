@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -47,4 +44,36 @@ public class HelloController {
 
 		return "redirect:/";
 	}
+	@RequestMapping(value = "/delete/{id}", method=RequestMethod.POST)
+	public String deleteEntry (Model model, @PathVariable Long id) {
+		guestBookService.delete (id);
+
+		return "redirect:/";
+	}
+
+	@RequestMapping (value="/edit/{id}", method = RequestMethod.GET)
+	public String editEntry (Model model, @PathVariable Long id) {
+		model.addAttribute (FORM_KEY, guestBookService.findOne (id));
+		return GUESTBOOK_FORM;
+	}
+
+	@RequestMapping (value="/edit/{id}", method = RequestMethod.POST)
+	public String editSaveGuestBook (Model model,
+									 @PathVariable Long id,
+									 @Valid @ModelAttribute(FORM_KEY) GuestBookEntry form,
+									 BindingResult bindingResult ) {
+
+		if ( bindingResult.hasErrors() ) {
+			model.addAttribute(ENTRIES_KEY, guestBookService.findAll());
+			return GUESTBOOK_FORM;
+		}
+
+		GuestBookEntry existing = guestBookService.findOne (id);
+		existing.setName (form.getName());
+		existing.setComment(form.getComment());
+		guestBookService.save (existing);
+
+		return "redirect:/";
+	}
+
 }

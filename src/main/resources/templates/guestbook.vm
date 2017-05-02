@@ -1,6 +1,11 @@
-
+<title>Shopping List</title>
+<h1>Shopping List</h1><br>
 #foreach ( $entry in $entries )
-    $entry.name : $entry.comment</br>
+    $entry.name : $entry.comment
+    <a href="edit/$entry.id">update</a>
+<form method="POST" action="/delete/$entry.id">
+    <input type="submit" value="Delete">
+</form>
 #end
 
 <form method="POST" command="form">
@@ -8,12 +13,12 @@
     <p>
 
         #springBind("form.name")#springShowErrors("<br/>", "text-danger")
-        Name: #springFormInput("form.name")
+        Item: #springFormInput("form.name")
 
         </br>
 
         #springBind("form.comment")#springShowErrors("<br/>", "text-danger")
-        Comment: #springFormInput("form.comment")
+        Desc/Quantity: #springFormInput("form.comment")
 
         <input type="submit"/>
 

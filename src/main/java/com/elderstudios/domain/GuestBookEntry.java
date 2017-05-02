@@ -17,7 +17,7 @@ public class GuestBookEntry {
     @Column(name = "id")
     private Long id;
 
-    @NotEmpty
+    @NotEmpty //this is used for validation @NotEmpty
     private String name;
 
     @NotEmpty

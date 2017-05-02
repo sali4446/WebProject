@@ -20,4 +20,13 @@ public class GuestBookService {
     public GuestBookEntry save(GuestBookEntry entry) {
         return guestBookEntryRepository.save(entry);
     }
+
+    public void delete(long id){ guestBookEntryRepository.delete(id);
+
+    }
+
+    public GuestBookEntry findOne(Long id) {
+        return guestBookEntryRepository.findOne(id);
+    }
+
 }
